@@ -1,0 +1,25 @@
+# Default values for app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+imageFullName: johnoliveira/webservice:1.0.0
+tlsEnabled: true
+ingressClassName: "nginx"
+hosts: 
+  - eisso.online
+  - www.eisso.online
+
+# For CPU resource units, the quantity expression 100m can be read as "one hundred millicpu".
+cpuRequest: 150m 
+cpuLimit: 250m
+
+# Memory are measured in bytes, the sufix Mi (mebibytes) means 1024^2 bytes = 1048576 bytes. 
+# And sufix M (megabytes) means 1000^2 bytes = 1000000 bytes. 
+# Therefore 1 Mi = 1,048576 M
+memoryRequest: 80Mi
+memoryLimit: 150Mi
+
+minReplicas: 8
+maxReplicas: 100
+cpuUtilizationPercentage: 75
+memoryUtilizationPercentage: 70

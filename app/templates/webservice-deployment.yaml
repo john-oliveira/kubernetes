@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-webservice-deployment
+  labels:
+    app: webservice
+spec:
+  selector:
+    matchLabels:
+      app: webservice
+  template:
+    metadata:
+      labels:
+        app: webservice
+    spec:
+      containers:
+      - name: webservice
+        image: {{ .Values.imageFullName }}
+        ports:
+        - containerPort: 80
+        envFrom:
+          - secretRef:
+              name: {{ .Release.Name }}-secret-mongo
+        resources:
+          requests:
+            cpu: {{ .Values.cpuRequest }}
+            memory: {{ .Values.memoryRequest }}
+          limits:
+            cpu: {{ .Values.cpuLimit }}
+            memory: {{ .Values.memoryLimit }}

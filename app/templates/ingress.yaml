@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress
+  {{- if .Values.tlsEnabled }}
+  annotations:
+    # add an annotation indicating the issuer to use.
+    cert-manager.io/cluster-issuer: meu-letsencrypt
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingressClassName }}
+  {{- if .Values.tlsEnabled }}
+  tls:
+  - hosts:
+  {{- range .Values.hosts }}
+    - {{ . }}
+  {{- end }}
+    secretName: {{ .Release.Name }}-ingress-cert
+  {{- end }}
+  rules:
+  {{- range .Values.hosts }}
+  - host: {{ . }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ $.Release.Name }}-webservice-service
+            port:
+              number: 80
+    {{- end }}
